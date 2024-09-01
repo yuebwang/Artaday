@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Art Inspiration</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            color: #333;
+            transition: background-color 0.5s ease;
+        }
+
+        #art-container {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        #artwork {
+            max-width: 90vw;
+            max-height: 80vh;
+            object-fit: contain;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        .artwork-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 2vh 3vw;
+            transform: translateY(100%);
+            transition: transform 0.3s ease-out;
+        }
+
+        #art-container:hover .artwork-info {
+            transform: translateY(0);
+        }
+
+        .artwork-info h2 {
+            margin: 0 0 0.5vh 0;
+            font-size: calc(14px + 0.5vw);
+        }
+
+        .artwork-info p {
+            margin: 0;
+            font-size: calc(12px + 0.3vw);
+            line-height: 1.4;
+        }
+
+        .artwork-info .artist {
+            font-style: italic;
+        }
+
+        .artwork-info .museum {
+            font-size: calc(10px + 0.2vw);
+            color: #666;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .artwork-info .museum:hover {
+            color: #333;
+            text-decoration: underline;
+        }
+
+        .top-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            z-index: 1001;
+        }
+
+        .countdown {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            font-size: calc(12px + 0.3vw);
+            color: rgba(0, 0, 0, 0.7);
+            transition: color 0.5s ease;
+        }
+
+        .info-button {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s ease;
+        }
+
+        .info-dot {
+            width: 12px;
+            height: 12px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .info-button:hover .info-dot {
+            transform: scale(1.2);
+            background-color: rgba(255, 255, 255, 1);
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            height: 200px;
+            z-index: 1002;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            animation: fadeIn 0.5s ease-out;
+            overflow: hidden;
+        }
+
+        .artistic-text {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .artistic-text p {
+            position: absolute;
+            margin: 0;
+            color: #333;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        .artistic-text .main-text {
+            font-size: calc(14px + 0.3vw);
+        }
+
+        .artistic-text .sub-text {
+            font-size: calc(10px + 0.3vw);
+        }
+
+        .yuebo-link {
+            color: inherit;
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .yuebo-link:hover {
+            opacity: 0.7;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        /* Media Queries for different screen sizes */
+        @media screen and (max-width: 768px) {
+            #artwork {
+                max-width: 95vw;
+                max-height: 70vh;
+            }
+
+            .artwork-info {
+                padding: 1.5vh 2vw;
+            }
+
+            .artwork-info h2 {
+                font-size: calc(16px + 0.5vw);
+            }
+
+            .artwork-info p {
+                font-size: calc(14px + 0.3vw);
+            }
+
+            .artwork-info .museum {
+                font-size: calc(12px + 0.2vw);
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            #artwork {
+                max-width: 98vw;
+                max-height: 60vh;
+            }
+
+            .artwork-info {
+                padding: 1vh 1.5vw;
+            }
+
+            .artwork-info h2 {
+                font-size: calc(18px + 0.5vw);
+            }
+
+            .artwork-info p {
+                font-size: calc(16px + 0.3vw);
+            }
+
+            .artwork-info .museum {
+                font-size: calc(14px + 0.2vw);
+            }
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
+</head>
+<body>
+    <div class="top-elements">
+        <div id="countdown" class="countdown"></div>
+        <button class="info-button" onclick="togglePopup()" aria-label="Information">
+            <span class="info-dot"></span>
+        </button>
+    </div>
+    <div id="art-container">
+        <img id="artwork" src="" alt="Artwork of the day">
+        <div class="artwork-info">
+            <h2 id="title"></h2>
+            <p id="artist" class="artist"></p>
+            <p id="date"></p>
+            <a id="museum" class="museum" href="#" target="_blank" rel="noopener noreferrer"></a>
+        </div>
+    </div>
+    <div id="error-message" style="display: none; color: red; text-align: center; margin-top: 20px;"></div>
+    
+    <div class="overlay" onclick="togglePopup()"></div>
+    <div class="popup" id="infoPopup">
+        <div class="artistic-text">
+            <p class="main-text">one art piece a day</p>
+            <p class="main-text">from museums x miles away</p>
+            <p class="sub-text">brought to you by <a href="mailto:yuebooscar@gmail.com" class="yuebo-link">yuebo wang</a></p>
+        </div>
+    </div>
+
+    <script>
+        const museums = [
+            { name: 'The Metropolitan Museum of Art', api: 'https://collectionapi.metmuseum.org/public/collection/v1/objects/' },
+            { name: 'Art Institute of Chicago', api: 'https://api.artic.edu/api/v1/artworks/' },
+            { name: 'Cleveland Museum of Art', api: 'https://openaccess-api.clevelandart.org/api/artworks/' },
+            { name: 'National Gallery of Art', api: 'https://api.nga.gov/art/v1/artworks/' },
+            { name: 'Victoria and Albert Museum', api: 'https://api.vam.ac.uk/v2/objects/' },
+            { name: 'Museum of Modern Art', api: 'https://api.moma.org/v1/artworks/' },
+            { name: 'Tate Modern', api: 'https://api.tate.org.uk/artworks/' }
+        ];
+
+        const STORAGE_KEY = 'dailyArtwork';
+        const QUEUE_KEY = 'artworkQueue';
+        const DISPLAYED_KEY = 'displayedArtworks';
+        const QUEUE_SIZE = 7; // One week of artworks
+        const REQUEST_DELAY = 1000; // 1 second delay between requests
+
+        const colorThief = new ColorThief();
+
+        function getPSTDate() {
+            const date = new Date();
+            const utc = date.getTime() + (date.getTimezoneOffset() * 60000);
+            const pstOffset = -8; // PST is UTC-8
+            const pstTime = new Date(utc + (3600000 * pstOffset));
+            return pstTime.toDateString();
+        }
+
+        async function fetchDailyArtwork() {
+            const today = getPSTDate();
+            const storedArtwork = localStorage.getItem(STORAGE_KEY);
+
+            if (storedArtwork) {
+                const { date, artwork, museumName } = JSON.parse(storedArtwork);
+                if (date === today) {
+                    console.log('Using stored artwork for today');
+                    displayArtwork(artwork, museumName);
+                    return;
+                }
+            }
+
+            let artwork, museumName;
+            const queue = JSON.parse(localStorage.getItem(QUEUE_KEY) || '[]');
+
+            try {
+                if (queue.length > 0) {
+                    ({ artwork, museumName } = queue.shift());
+                    localStorage.setItem(QUEUE_KEY, JSON.stringify(queue));
+                } else {
+                    ({ artwork, museumName } = await fetchNewArtwork());
+                }
+
+                if (artwork) {
+                    displayArtwork(artwork, museumName);
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify({ date: today, artwork, museumName }));
+                    updateDisplayedArtworks(artwork, museumName);
+                } else {
+                    displayOffDayMessage();
+                }
+            } catch (error) {
+                console.error('Error fetching artwork:', error);
+                displayOffDayMessage();
+            }
+
+            await refillQueue();
+            startCountdown();
+        }
+
+        async function fetchNewArtwork() {
+            const displayedArtworks = JSON.parse(localStorage.getItem(DISPLAYED_KEY) || '[]');
+            const shuffledMuseums = [...museums].sort(() => 0.5 - Math.random());
+
+            for (const museum of shuffledMuseums) {
+                try {
+                    const artwork = await fetchFromMuseum(museum);
+                    if (artwork && !isArtworkDisplayed(artwork, museum.name, displayedArtworks)) {
+                        return { artwork, museumName: museum.name };
+                    }
+                } catch (error) {
+                    console.error(`Error fetching from ${museum.name}:`, error);
+                }
+                await new Promise(resolve => setTimeout(resolve, REQUEST_DELAY));
+            }
+
+            return { artwork: null, museumName: null };
+        }
+
+        async function refillQueue() {
+            let queue = JSON.parse(localStorage.getItem(QUEUE_KEY) || '[]');
+            while (queue.length < QUEUE_SIZE) {
+                const { artwork, museumName } = await fetchNewArtwork();
+                if (artwork) {
+                    queue.push({ artwork, museumName });
+                } else {
+                    break; // Stop if we can't fetch new artworks
+                }
+            }
+            localStorage.setItem(QUEUE_KEY, JSON.stringify(queue));
+        }
+
+        function isArtworkDisplayed(artwork, museumName, displayedArtworks) {
+            const artworkId = getArtworkId(artwork, museumName);
+            return displayedArtworks.includes(artworkId);
+        }
+
+        function updateDisplayedArtworks(artwork, museumName) {
+            const displayedArtworks = JSON.parse(localStorage.getItem(DISPLAYED_KEY) || '[]');
+            const artworkId = getArtworkId(artwork, museumName);
+            displayedArtworks.push(artworkId);
+            if (displayedArtworks.length > 100) { // Keep only the last 100 displayed artworks
+                displayedArtworks.shift();
+            }
+            localStorage.setItem(DISPLAYED_KEY, JSON.stringify(displayedArtworks));
+        }
+
+        function getArtworkId(artwork, museumName) {
+            switch (museumName) {
+                case 'The Metropolitan Museum of Art':
+                    return `met_${artwork.objectID}`;
+                case 'Art Institute of Chicago':
+                    return `aic_${artwork.id}`;
+                // ... (other cases)
+                default:
+                    return `unknown_${JSON.stringify(artwork)}`;
+            }
+        }
+
+        async function fetchFromMuseum(museum) {
+            let artwork;
+            switch (museum.name) {
+                case 'The Metropolitan Museum of Art':
+                    const metResponse = await fetch(`${museum.api}${Math.floor(Math.random() * 500000)}`);
+                    artwork = await metResponse.json();
+                    if (!artwork.primaryImage) return null;
+                    break;
+                case 'Art Institute of Chicago':
+                    const aicResponse = await fetch(`${museum.api}?limit=1&fields=id,title,image_id,date_display,artist_title`);
+                    const aicData = await aicResponse.json();
+                    artwork = aicData.data[0];
+                    if (!artwork || !artwork.image_id) return null;
+                    break;
+                // ... (other cases remain the same)
+                default:
+                    console.error('Unknown museum');
+                    return null;
+            }
+            return artwork;
+        }
+
+        function displayArtwork(artwork, museumName) {
+            const imgElement = document.getElementById('artwork');
+            const titleElement = document.getElementById('title');
+            const artistElement = document.getElementById('artist');
+            const dateElement = document.getElementById('date');
+            const museumElement = document.getElementById('museum');
+
+            let artworkUrl;
+
+            switch (museumName) {
+                case 'The Metropolitan Museum of Art':
+                    imgElement.src = artwork.primaryImage;
+                    titleElement.textContent = artwork.title;
+                    artistElement.textContent = artwork.artistDisplayName;
+                    dateElement.textContent = artwork.objectDate;
+                    artworkUrl = `https://www.metmuseum.org/art/collection/search/${artwork.objectID}`;
+                    break;
+                case 'Art Institute of Chicago':
+                    imgElement.src = `https://www.artic.edu/iiif/2/${artwork.image_id}/full/843,/0/default.jpg`;
+                    titleElement.textContent = artwork.title;
+                    artistElement.textContent = artwork.artist_title;
+                    dateElement.textContent = artwork.date_display;
+                    artworkUrl = `https://www.artic.edu/artworks/${artwork.id}`;
+                    break;
+                // ... (other cases remain the same)
+                default:
+                    console.error('Unknown museum');
+                    return;
+            }
+
+            museumElement.textContent = `Courtesy of ${museumName}`;
+            museumElement.href = artworkUrl;
+            document.getElementById('error-message').style.display = 'none';
+
+            // Set background color after image loads
+            imgElement.onload = function() {
+                setBackgroundColor(imgElement);
+            };
+        }
+
+        function setBackgroundColor(imgElement) {
+            const dominantColor = colorThief.getColor(imgElement);
+            const backgroundColor = calculateBackgroundColor(dominantColor);
+            document.body.style.backgroundColor = `rgb(${backgroundColor.join(',')})`;
+            adjustTopElementsColor(backgroundColor);
+        }
+
+        function calculateBackgroundColor(dominantColor) {
+            // Calculate a lighter version of the dominant color
+            const lightness = 0.8; // Adjust this value to make the background lighter or darker
+            return dominantColor.map(channel => Math.round(channel + (255 - channel) * lightness));
+        }
+
+        function adjustTopElementsColor(backgroundColor) {
+            const brightness = (backgroundColor[0] * 299 + backgroundColor[1] * 587 + backgroundColor[2] * 114) / 1000;
+            const countdown = document.getElementById('countdown');
+            const infoDot = document.querySelector('.info-dot');
+            
+            if (brightness > 128) {
+                // Dark text/dot for light backgrounds
+                countdown.style.color = calculateContrastColor(backgroundColor, false);
+                infoDot.style.backgroundColor = calculateContrastColor(backgroundColor, false);
+            } else {
+                // Light text/dot for dark backgrounds
+                countdown.style.color = calculateContrastColor(backgroundColor, true);
+                infoDot.style.backgroundColor = calculateContrastColor(backgroundColor, true);
+            }
+        }
+
+        function calculateContrastColor(backgroundColor, isLight) {
+            const contrastRatio = 4.5; // WCAG AA standard for normal text
+            const rgb = isLight ? [255, 255, 255] : [0, 0, 0];
+            
+            for (let i = 0; i < 3; i++) {
+                let low = 0;
+                let high = 255;
+                let mid;
+                while (low <= high) {
+                    mid = Math.floor((low + high) / 2);
+                    rgb[i] = mid;
+                    if (getContrastRatio(rgb, backgroundColor) < contrastRatio) {
+                        if (isLight) {
+                            low = mid + 1;
+                        } else {
+                            high = mid - 1;
+                        }
+                    } else {
+                        break;
+                    }
+                }
+            }
+            
+            return `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, 0.8)`;
+        }
+
+        function getContrastRatio(color1, color2) {
+            const l1 = getLuminance(color1);
+            const l2 = getLuminance(color2);
+            return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+        }
+
+        function getLuminance(rgb) {
+            const a = rgb.map(v => {
+                v /= 255;
+                return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+            });
+            return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
+        }
+
+        function displayOffDayMessage() {
+            const container = document.getElementById('art-container');
+            container.innerHTML = `
+                <h2>Art Break Day</h2>
+                <p>Today, we invite you to reflect on the artworks you've seen so far and perhaps create some art of your own. We'll be back with a new piece tomorrow!</p>
+            `;
+        }
+
+        // Initial fetch
+        fetchDailyArtwork();
+
+        function togglePopup() {
+            const popup = document.getElementById('infoPopup');
+            const overlay = document.querySelector('.overlay');
+            if (popup.style.display === 'block') {
+                popup.style.display = 'none';
+                overlay.style.display = 'none';
+            } else {
+                popup.style.display = 'block';
+                overlay.style.display = 'block';
+                randomizeTextLayout();
+            }
+        }
+
+        function randomizeTextLayout() {
+            const container = document.querySelector('.artistic-text');
+            const lines = container.querySelectorAll('p');
+            const containerRect = container.getBoundingClientRect();
+
+            const sectionHeight = containerRect.height / 3;
+
+            lines.forEach((line, index) => {
+                const randomX = Math.random() * (containerRect.width - line.offsetWidth);
+                const baseY = index * sectionHeight;
+                const randomY = baseY + Math.random() * (sectionHeight - line.offsetHeight);
+
+                line.style.left = `${randomX}px`;
+                line.style.top = `${randomY}px`;
+            });
+        }
+
+        // Call randomizeTextLayout when the page loads
+        window.addEventListener('load', randomizeTextLayout);
+
+        function startCountdown() {
+            const now = new Date();
+            const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+            tomorrow.setHours(0, 0, 0, 0);
+            
+            function updateCountdown() {
+                const now = new Date();
+                const timeLeft = tomorrow - now;
+                
+                const hours = Math.floor(timeLeft / (1000 * 60 * 60));
+                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+                
+                const countdownElement = document.getElementById('countdown');
+                countdownElement.textContent = `Next artwork in: ${hours}h ${minutes}m ${seconds}s`;
+                
+                if (timeLeft < 0) {
+                    clearInterval(countdownInterval);
+                    fetchDailyArtwork();
+                }
+            }
+            
+            updateCountdown();
+            const countdownInterval = setInterval(updateCountdown, 1000);
+        }
+    </script>
+</body>
+</html>

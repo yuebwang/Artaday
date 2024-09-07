@@ -101,6 +101,10 @@
         }
 
         .info-button {
+            position: fixed; /* Change from absolute to fixed */
+            top: 20px;
+            right: 20px;
+            z-index: 1002; /* Ensure it's above other elements */
             background-color: rgba(0, 0, 0, 0.3);
             border-radius: 50%;
             width: 24px;
@@ -114,9 +118,6 @@
             justify-content: center;
             transition: background-color 0.3s ease;
             padding: 0; /* Remove any padding */
-            position: absolute;
-            top: 20px;
-            right: 20px;
         }
 
         .info-button:hover,
@@ -127,6 +128,10 @@
         .info-button:focus {
             outline: 2px solid #007bff; /* Visible focus outline for accessibility */
             outline-offset: 2px;
+        }
+
+        .info-button:active {
+            background-color: rgba(0, 0, 0, 0.7);
         }
 
         .info-dot {
@@ -251,16 +256,36 @@
                 font-size: calc(14px + 0.2vw);
             }
         }
+
+        .popup-content {
+            max-height: 80vh; /* Limit height to 80% of viewport height */
+            overflow-y: auto; /* Add scrolling for overflow content */
+            padding-bottom: 60px; /* Add extra padding at the bottom */
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding-bottom: 60px; /* Add padding to the bottom of the body */
+            }
+
+            .popup-content {
+                max-height: 70vh; /* Reduce max height on mobile */
+            }
+
+            #art-container {
+                margin-bottom: 80px; /* Add margin to the bottom of the art container */
+            }
+        }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
 </head>
 <body>
     <div class="top-elements">
         <div id="countdown" class="countdown" aria-live="polite"></div>
+        <button class="info-button" onclick="togglePopup()" aria-label="Information">
+            <span class="info-dot"></span>
+        </button>
     </div>
-    <button class="info-button" onclick="togglePopup()" aria-label="Information">
-        <span class="info-dot"></span>
-    </button>
     <div id="art-container">
         <img id="artwork" src="" alt="Artwork of the day">
         <div class="artwork-info">
@@ -530,6 +555,11 @@
                 popup.style.display = 'block';
                 overlay.style.display = 'block';
                 randomizeTextLayout();
+            }
+            
+            // Scroll to top of popup when opened
+            if (popup.style.display === "block") {
+                document.querySelector('.popup-content').scrollTop = 0;
             }
         }
 

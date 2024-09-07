@@ -212,29 +212,50 @@
 
         /* Media Queries for different screen sizes */
         @media screen and (max-width: 768px) {
+            body, html {
+                overflow: auto; /* Allow scrolling on mobile */
+            }
+
+            #art-container {
+                height: auto; /* Remove fixed height */
+                min-height: 100vh; /* Ensure it takes at least full viewport height */
+            }
+
             #artwork {
-                max-width: 95vw;
-                max-height: 70vh;
+                max-width: 100%;
+                max-height: none; /* Remove max-height restriction */
+                width: auto;
+                height: auto;
             }
 
             .artwork-info {
-                padding: 1.5vh 2vw;
+                position: static; /* Remove absolute positioning */
+                transform: none;
+                max-height: none; /* Remove max-height */
+                background-color: rgba(255, 255, 255, 0.9); /* Increase opacity for better readability */
             }
 
-            .artwork-info h2 {
-                font-size: calc(16px + 0.5vw);
+            #art-container:hover .artwork-info {
+                transform: none; /* Remove hover effect on mobile */
             }
 
-            .artwork-info p {
-                font-size: calc(14px + 0.3vw);
+            .top-elements {
+                position: sticky; /* Make top elements stick to the top while scrolling */
+                top: 0;
+                background-color: rgba(255, 255, 255, 0.9); /* Add background to ensure readability */
+                z-index: 1000;
             }
 
-            .artwork-info .museum {
-                font-size: calc(12px + 0.2vw);
+            .info-button {
+                position: absolute; /* Change from fixed to absolute */
+                right: 20px;
             }
         }
 
+        /* Adjust font sizes for better readability on mobile */
         @media screen and (max-width: 480px) {
+            .artwork-info h2 {
+                font-size: calc(16px + 0.5vw);
             #artwork {
                 max-width: 98vw;
                 max-height: 60vh;

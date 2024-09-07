@@ -86,44 +86,42 @@
         }
 
         .countdown {
-            position: fixed;
-            top: 20px;
-            left: 20px;
             font-family: 'Helvetica Neue', Arial, sans-serif;
             font-size: calc(12px + 0.3vw);
             color: rgba(0, 0, 0, 0.7);
-            z-index: 1001;
+            display: flex;
+            align-items: center;
+            height: 24px; /* Match height with info button */
         }
 
         .info-button {
-            background-color: rgba(0, 0, 0, 0.1);
+            background-color: rgba(0, 0, 0, 0.3);
             border-radius: 50%;
             width: 24px;
             height: 24px;
             border: none;
             cursor: pointer;
-            padding: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: opacity 0.3s ease;
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1001;
+            transition: background-color 0.3s ease;
+        }
+
+        .info-button:hover,
+        .info-button:focus {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .info-button:focus {
+            outline: 2px solid #007bff; /* Visible focus outline for accessibility */
+            outline-offset: 2px;
         }
 
         .info-dot {
             width: 4px;
             height: 4px;
-            background-color: rgba(255, 255, 255, 0.8);
+            background-color: white;
             border-radius: 50%;
-            transition: all 0.3s ease;
-        }
-
-        .info-button:hover .info-dot {
-            transform: scale(1.2);
-            background-color: rgba(255, 255, 255, 1);
         }
 
         .popup {
@@ -242,8 +240,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
 </head>
 <body>
-    <div id="countdown" class="countdown"></div>
     <div class="top-elements">
+        <div id="countdown" class="countdown" aria-live="polite"></div>
         <button class="info-button" onclick="togglePopup()" aria-label="Information">
             <span class="info-dot"></span>
         </button>
@@ -487,18 +485,15 @@
             const brightness = (backgroundColor[0] * 299 + backgroundColor[1] * 587 + backgroundColor[2] * 114) / 1000;
             const countdown = document.getElementById('countdown');
             const infoButton = document.querySelector('.info-button');
-            const infoDot = document.querySelector('.info-dot');
             
             if (brightness > 128) {
-                // Dark elements for light backgrounds
+                // Dark text and button for light backgrounds
                 countdown.style.color = 'rgba(0, 0, 0, 0.7)';
-                infoButton.style.backgroundColor = 'rgba(0, 0, 0, 0.1)';
-                infoDot.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+                infoButton.style.backgroundColor = 'rgba(0, 0, 0, 0.3)';
             } else {
-                // Light elements for dark backgrounds
+                // Light text and button for dark backgrounds
                 countdown.style.color = 'rgba(255, 255, 255, 0.7)';
-                infoButton.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
-                infoDot.style.backgroundColor = 'rgba(255, 255, 255, 0.7)';
+                infoButton.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
             }
         }
 

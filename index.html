@@ -212,48 +212,93 @@
 
         /* Media Queries for different screen sizes */
         @media screen and (max-width: 768px) {
+            body, html {
+                height: 100%;
+                overflow-y: auto;
+            }
+
+            #art-container {
+                height: auto;
+                min-height: 100%;
+                padding: 60px 15px 80px; /* Top padding for countdown, bottom for browser UI */
+                box-sizing: border-box;
+                display: flex;
+                flex-direction: column;
+            }
+
             #artwork {
-                max-width: 95vw;
-                max-height: 70vh;
+                max-width: 100%;
+                height: auto;
+                max-height: 60vh; /* Limit height to ensure info is visible */
+                object-fit: contain;
+                margin-bottom: 15px;
             }
 
             .artwork-info {
-                padding: 1.5vh 2vw;
+                position: static;
+                transform: none;
+                background-color: transparent;
+                padding: 0;
+                margin-top: auto; /* Push info to the bottom */
+            }
+
+            .top-elements {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                padding: 15px;
+                background-color: rgba(255, 255, 255, 0.9);
+                z-index: 1000;
+            }
+
+            .countdown {
+                font-size: 14px;
             }
 
             .artwork-info h2 {
-                font-size: calc(16px + 0.5vw);
+                font-size: 18px;
+                margin-bottom: 5px;
             }
 
             .artwork-info p {
-                font-size: calc(14px + 0.3vw);
+                font-size: 14px;
+                margin-bottom: 3px;
+            }
+
+            .artwork-info .artist {
+                font-size: 16px;
+                margin-bottom: 5px;
             }
 
             .artwork-info .museum {
-                font-size: calc(12px + 0.2vw);
+                font-size: 12px;
+                color: #666;
             }
         }
 
-        @media screen and (max-width: 480px) {
-            #artwork {
-                max-width: 98vw;
-                max-height: 60vh;
+        /* Adjustments for very small screens */
+        @media screen and (max-width: 320px) {
+            #art-container {
+                padding-top: 50px;
+                padding-bottom: 70px;
             }
 
-            .artwork-info {
-                padding: 1vh 1.5vw;
+            .countdown {
+                font-size: 12px;
             }
 
             .artwork-info h2 {
-                font-size: calc(18px + 0.5vw);
+                font-size: 16px;
             }
 
-            .artwork-info p {
-                font-size: calc(16px + 0.3vw);
+            .artwork-info p,
+            .artwork-info .artist {
+                font-size: 14px;
             }
 
             .artwork-info .museum {
-                font-size: calc(14px + 0.2vw);
+                font-size: 11px;
             }
         }
 
@@ -506,6 +551,17 @@
             if (imgElement.complete) {
                 setBackgroundColor(imgElement);
             }
+
+            // Adjust image size for mobile
+            if (window.innerWidth <= 768) {
+                imgElement.style.maxHeight = '60vh';
+                imgElement.style.width = 'auto';
+                imgElement.style.height = 'auto';
+            } else {
+                imgElement.style.maxHeight = '';
+                imgElement.style.width = '';
+                imgElement.style.height = '';
+            }
         }
 
         function setBackgroundColor(imgElement) {
@@ -551,10 +607,12 @@
             if (popup.style.display === 'block') {
                 popup.style.display = 'none';
                 overlay.style.display = 'none';
+                document.body.style.overflow = 'auto'; // Re-enable scrolling
             } else {
                 popup.style.display = 'block';
                 overlay.style.display = 'block';
                 randomizeTextLayout();
+                document.body.style.overflow = 'hidden'; // Disable scrolling when popup is open
             }
             
             // Scroll to top of popup when opened
@@ -614,6 +672,20 @@
             updateCountdown(); // Update immediately
             countdownInterval = setInterval(updateCountdown, 1000);
         }
+
+        // Call this function when the window is resized
+        window.addEventListener('resize', function() {
+            const imgElement = document.getElementById('artwork');
+            if (window.innerWidth <= 768) {
+                imgElement.style.maxHeight = '60vh';
+                imgElement.style.width = 'auto';
+                imgElement.style.height = 'auto';
+            } else {
+                imgElement.style.maxHeight = '';
+                imgElement.style.width = '';
+                imgElement.style.height = '';
+            }
+        });
 
         // Initialize the app when the DOM is fully loaded
         document.addEventListener('DOMContentLoaded', initializeApp);

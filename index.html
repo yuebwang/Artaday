@@ -137,10 +137,10 @@
         .toggle-switch {
             position: absolute;
             content: "";
-            height: 20px;
-            width: 20px;
-            left: 2px;
-            bottom: 2px;
+            height: 22px; /* Increased from 20px */
+            width: 22px; /* Increased from 20px */
+            left: 1px; /* Adjusted from 2px */
+            bottom: 1px; /* Adjusted from 2px */
             background-color: var(--button-color);
             transition: .4s;
             border-radius: 50%;
@@ -153,17 +153,17 @@
         .toggle-inner:before {
             content: "☀️";
             position: absolute;
-            left: 6px;
-            top: 3px;
-            font-size: 14px;
+            left: 4px; /* Adjusted from 6px */
+            top: 2px; /* Adjusted from 3px */
+            font-size: 14px; /* Decreased from 16px */
         }
 
         .toggle-inner:after {
             content: "🌙";
             position: absolute;
-            right: 6px;
-            top: 3px;
-            font-size: 14px;
+            right: 4px; /* Adjusted from 6px */
+            top: 2px; /* Adjusted from 3px */
+            font-size: 14px; /* Decreased from 16px */
         }
 
         .info-button {
@@ -439,10 +439,10 @@
         .toggle-switch {
             position: absolute;
             content: "";
-            height: 20px;
-            width: 20px;
-            left: 2px;
-            bottom: 2px;
+            height: 22px; /* Increased from 20px */
+            width: 22px; /* Increased from 20px */
+            left: 1px; /* Adjusted from 2px */
+            bottom: 1px; /* Adjusted from 2px */
             background-color: var(--button-color);
             transition: .4s;
             border-radius: 50%;
@@ -455,17 +455,17 @@
         .toggle-inner:before {
             content: "☀️";
             position: absolute;
-            left: 6px;
-            top: 3px;
-            font-size: 14px;
+            left: 4px; /* Adjusted from 6px */
+            top: 2px; /* Adjusted from 3px */
+            font-size: 14px; /* Decreased from 16px */
         }
 
         .toggle-inner:after {
             content: "🌙";
             position: absolute;
-            right: 6px;
-            top: 3px;
-            font-size: 14px;
+            right: 4px; /* Adjusted from 6px */
+            top: 2px; /* Adjusted from 3px */
+            font-size: 14px; /* Decreased from 16px */
         }
 
         .info-button {
@@ -504,8 +504,8 @@
             }
 
             .toggle-switch {
-                width: 20px;
-                height: 20px;
+                width: 18px; /* Adjusted for mobile */
+                height: 18px; /* Adjusted for mobile */
             }
 
             .toggle-checkbox:checked + .toggle-label .toggle-switch {
@@ -514,7 +514,31 @@
 
             .toggle-inner:before,
             .toggle-inner:after {
-                font-size: 12px;
+                font-size: 14px; /* Adjusted for mobile */
+                top: 3px; /* Adjusted for mobile */
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .mode-toggle {
+                width: 40px;
+                height: 24px; /* Ensure height is consistent */
+            }
+
+            .toggle-switch {
+                width: 22px; /* Keep consistent with larger screens */
+                height: 22px; /* Keep consistent with larger screens */
+                bottom: 1px; /* Center vertically */
+            }
+
+            .toggle-checkbox:checked + .toggle-label .toggle-switch {
+                transform: translateX(16px);
+            }
+
+            .toggle-inner:before,
+            .toggle-inner:after {
+                font-size: 12px; /* Further decreased for mobile */
+                top: 4px; /* Adjusted to center vertically */
             }
         }
     </style>

@@ -94,23 +94,85 @@
 
         .countdown {
             font-size: calc(12px + 0.3vw);
-            color: rgba(0, 0, 0, 0.7);
+            color: var(--countdown-color);
             display: flex;
             align-items: center;
-            height: 24px; /* Match height with info button */
+            height: 24px;
+            transition: color 0.3s ease;
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+        }
+
+        .mode-toggle {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+            margin-right: 10px;
+        }
+
+        .toggle-checkbox {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-label {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--button-bg-color);
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .toggle-switch {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 2px;
+            bottom: 2px;
+            background-color: var(--button-color);
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        .toggle-checkbox:checked + .toggle-label .toggle-switch {
+            transform: translateX(26px);
+        }
+
+        .toggle-inner:before {
+            content: "☀️";
+            position: absolute;
+            left: 6px;
+            top: 3px;
+            font-size: 14px;
+        }
+
+        .toggle-inner:after {
+            content: "🌙";
+            position: absolute;
+            right: 6px;
+            top: 3px;
+            font-size: 14px;
         }
 
         .info-button {
-            position: fixed; /* Change from absolute to fixed */
-            top: 20px;
-            right: 20px;
-            z-index: 1002; /* Ensure it's above other elements */
-            background-color: rgba(0, 0, 0, 0.3);
-            border-radius: 50%;
+            position: relative; /* Change from fixed to relative */
+            background-color: var(--button-bg-color);
+            color: var(--button-color);
             width: 24px;
             height: 24px;
             min-width: 24px; /* Ensure minimum width */
             min-height: 24px; /* Ensure minimum height */
+            border-radius: 50%;
             border: none;
             cursor: pointer;
             display: flex;
@@ -122,7 +184,7 @@
 
         .info-button:hover,
         .info-button:focus {
-            background-color: rgba(0, 0, 0, 0.5);
+            background-color: rgba(128, 128, 128, 0.5);
         }
 
         .info-button:focus {
@@ -130,16 +192,12 @@
             outline-offset: 2px;
         }
 
-        .info-button:active {
-            background-color: rgba(0, 0, 0, 0.7);
-        }
-
         .info-dot {
             width: 4px;
             height: 4px;
             min-width: 4px; /* Ensure minimum width */
             min-height: 4px; /* Ensure minimum height */
-            background-color: white;
+            background-color: var(--button-color);
             border-radius: 50%;
             display: block; /* Ensure it's treated as a block element */
         }
@@ -321,15 +379,171 @@
                 margin-bottom: 80px; /* Add margin to the bottom of the art container */
             }
         }
+
+        :root {
+            --bg-color: #ffffff;
+            --text-color: #333333;
+            --info-bg-color: rgba(255, 255, 255, 0.8);
+            --button-bg-color: rgba(0, 0, 0, 0.3);
+            --button-color: white;
+            --countdown-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .dark-mode {
+            --bg-color: #121212;
+            --text-color: #e0e0e0;
+            --info-bg-color: rgba(18, 18, 18, 0.8);
+            --button-bg-color: rgba(255, 255, 255, 0.3);
+            --button-color: black;
+            --countdown-color: rgba(255, 255, 255, 0.9);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .artwork-info {
+            background-color: var(--info-bg-color);
+        }
+
+        .top-elements {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .countdown {
+            flex-grow: 1;
+        }
+
+        .mode-toggle {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+            margin-right: 10px;
+        }
+
+        .toggle-checkbox {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-label {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--button-bg-color);
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .toggle-switch {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 2px;
+            bottom: 2px;
+            background-color: var(--button-color);
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        .toggle-checkbox:checked + .toggle-label .toggle-switch {
+            transform: translateX(26px);
+        }
+
+        .toggle-inner:before {
+            content: "☀️";
+            position: absolute;
+            left: 6px;
+            top: 3px;
+            font-size: 14px;
+        }
+
+        .toggle-inner:after {
+            content: "🌙";
+            position: absolute;
+            right: 6px;
+            top: 3px;
+            font-size: 14px;
+        }
+
+        .info-button {
+            background-color: var(--button-bg-color);
+            color: var(--button-color);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease;
+        }
+
+        .info-button:hover {
+            background-color: rgba(128, 128, 128, 0.5);
+        }
+
+        .info-dot {
+            width: 4px;
+            height: 4px;
+            background-color: var(--button-color);
+            border-radius: 50%;
+        }
+
+        @media screen and (max-width: 768px) {
+            .top-elements {
+                padding: 15px;
+            }
+
+            .mode-toggle {
+                width: 40px;
+                height: 24px;
+            }
+
+            .toggle-switch {
+                width: 20px;
+                height: 20px;
+            }
+
+            .toggle-checkbox:checked + .toggle-label .toggle-switch {
+                transform: translateX(16px);
+            }
+
+            .toggle-inner:before,
+            .toggle-inner:after {
+                font-size: 12px;
+            }
+        }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
 </head>
 <body>
     <div class="top-elements">
         <div id="countdown" class="countdown" aria-live="polite"></div>
-        <button class="info-button" onclick="togglePopup()" aria-label="Information">
-            <span class="info-dot"></span>
-        </button>
+        <div class="controls">
+            <div class="mode-toggle">
+                <input type="checkbox" id="darkModeToggle" class="toggle-checkbox">
+                <label for="darkModeToggle" class="toggle-label">
+                    <span class="toggle-inner"></span>
+                    <span class="toggle-switch"></span>
+                </label>
+            </div>
+            <button class="info-button" onclick="togglePopup()" aria-label="Information">
+                <span class="info-dot"></span>
+            </button>
+        </div>
     </div>
     <div id="art-container">
         <img id="artwork" src="" alt="Artwork of the day">
@@ -347,7 +561,7 @@
         <div class="artistic-text">
             <p class="main-text">an art piece a day</p>
             <p class="main-text">from museums x miles away</p>
-            <p class="sub-text">a side project by <a href="https://nkzdd1isp.sites.cv/" target="_blank" rel="noopener noreferrer" class="yuebo-link">yuebo</a></p>
+            <p class="sub-text">a side project by <a href="https://yuebowang.com" target="_blank" rel="noopener noreferrer" class="yuebo-link">yuebo wang</a></p>
         </div>
     </div>
 
@@ -685,6 +899,39 @@
                 imgElement.style.width = '';
                 imgElement.style.height = '';
             }
+        });
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+            adjustInfoButtonColor();
+        }
+
+        function adjustInfoButtonColor() {
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            const infoButton = document.querySelector('.info-button');
+            const infoDot = document.querySelector('.info-dot');
+            
+            if (isDarkMode) {
+                infoButton.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
+                infoDot.style.backgroundColor = 'black';
+            } else {
+                infoButton.style.backgroundColor = 'rgba(0, 0, 0, 0.3)';
+                infoDot.style.backgroundColor = 'white';
+            }
+        }
+
+        function applyStoredDarkMode() {
+            if (localStorage.getItem('darkMode') === 'true') {
+                document.body.classList.add('dark-mode');
+                document.getElementById('darkModeToggle').checked = true;
+            }
+            adjustInfoButtonColor();
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            applyStoredDarkMode();
+            document.getElementById('darkModeToggle').addEventListener('change', toggleDarkMode);
         });
 
         // Initialize the app when the DOM is fully loaded

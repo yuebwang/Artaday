@@ -90,6 +90,8 @@
             align-items: center;
             padding: 20px;
             z-index: 1001;
+            background-color: var(--bg-color);
+            transition: background-color 0.3s ease;
         }
 
         .countdown {
@@ -208,7 +210,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background-color: rgba(255, 255, 255, 0.9);
+            background-color: var(--popup-bg-color);
             padding: 40px;
             border-radius: 8px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
@@ -217,7 +219,7 @@
             z-index: 1002;
             font-family: 'Helvetica Neue', Arial, sans-serif;
             animation: fadeIn 0.5s ease-out;
-            overflow: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         .artistic-text {
@@ -227,25 +229,16 @@
         }
 
         .artistic-text p {
-            position: absolute;
             margin: 0;
-            color: #333;
-            text-align: left;
-            white-space: nowrap;
-        }
-
-        .artistic-text .main-text {
-            font-size: calc(14px + 0.3vw);
-        }
-
-        .artistic-text .sub-text {
-            font-size: calc(10px + 0.3vw);
+            padding: 0;
+            color: var(--popup-text-color);
+            transition: color 0.3s ease;
         }
 
         .yuebo-link {
-            color: inherit;
+            color: var(--popup-text-color);
             text-decoration: none;
-            transition: opacity 0.3s ease;
+            transition: opacity 0.3s ease, color 0.3s ease;
         }
 
         .yuebo-link:hover {
@@ -301,13 +294,7 @@
             }
 
             .top-elements {
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
                 padding: 15px;
-                background-color: rgba(255, 255, 255, 0.9);
-                z-index: 1000;
             }
 
             .countdown {
@@ -387,6 +374,8 @@
             --button-bg-color: rgba(0, 0, 0, 0.3);
             --button-color: white;
             --countdown-color: rgba(0, 0, 0, 0.7);
+            --popup-bg-color: rgba(255, 255, 255, 0.9);
+            --popup-text-color: #333333;
         }
 
         .dark-mode {
@@ -396,6 +385,8 @@
             --button-bg-color: rgba(255, 255, 255, 0.3);
             --button-color: black;
             --countdown-color: rgba(255, 255, 255, 0.9);
+            --popup-bg-color: rgba(18, 18, 18, 0.9);
+            --popup-text-color: #e0e0e0;
         }
 
         body {
@@ -826,6 +817,7 @@
                 popup.style.display = 'block';
                 overlay.style.display = 'block';
                 randomizeTextLayout();
+                adjustColors(); // Ensure popup colors are correct when opened
                 document.body.style.overflow = 'hidden'; // Disable scrolling when popup is open
             }
             
@@ -847,6 +839,7 @@
                 const baseY = index * sectionHeight;
                 const randomY = baseY + Math.random() * (sectionHeight - line.offsetHeight);
 
+                line.style.position = 'absolute';
                 line.style.left = `${randomX}px`;
                 line.style.top = `${randomY}px`;
             });
@@ -904,20 +897,32 @@
         function toggleDarkMode() {
             document.body.classList.toggle('dark-mode');
             localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
-            adjustInfoButtonColor();
+            adjustColors();
         }
 
-        function adjustInfoButtonColor() {
+        function adjustColors() {
             const isDarkMode = document.body.classList.contains('dark-mode');
+            const topElements = document.querySelector('.top-elements');
             const infoButton = document.querySelector('.info-button');
             const infoDot = document.querySelector('.info-dot');
+            const popup = document.getElementById('infoPopup');
+            const artisticText = popup.querySelectorAll('.artistic-text p');
+            const yueboLink = popup.querySelector('.yuebo-link');
             
             if (isDarkMode) {
-                infoButton.style.backgroundColor = 'rgba(255, 255, 255, 0.3)';
-                infoDot.style.backgroundColor = 'black';
+                topElements.style.backgroundColor = 'var(--bg-color)';
+                infoButton.style.backgroundColor = 'var(--button-bg-color)';
+                infoDot.style.backgroundColor = 'var(--button-color)';
+                popup.style.backgroundColor = 'var(--popup-bg-color)';
+                artisticText.forEach(p => p.style.color = 'var(--popup-text-color)');
+                yueboLink.style.color = 'var(--popup-text-color)';
             } else {
-                infoButton.style.backgroundColor = 'rgba(0, 0, 0, 0.3)';
-                infoDot.style.backgroundColor = 'white';
+                topElements.style.backgroundColor = 'var(--bg-color)';
+                infoButton.style.backgroundColor = 'var(--button-bg-color)';
+                infoDot.style.backgroundColor = 'var(--button-color)';
+                popup.style.backgroundColor = 'var(--popup-bg-color)';
+                artisticText.forEach(p => p.style.color = 'var(--popup-text-color)');
+                yueboLink.style.color = 'var(--popup-text-color)';
             }
         }
 
@@ -926,7 +931,7 @@
                 document.body.classList.add('dark-mode');
                 document.getElementById('darkModeToggle').checked = true;
             }
-            adjustInfoButtonColor();
+            adjustColors();
         }
 
         document.addEventListener('DOMContentLoaded', function() {
